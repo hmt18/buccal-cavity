@@ -5,7 +5,7 @@
   <title>Observation Results - Frog Ciliary Motility</title>
   <style>
     body { font-family: "Segoe UI", sans-serif; margin:20px; background:#f5f8fa; color:#333; }
-    h1 { text-align:center; color:#2c3e50; }
+    /* h1 { text-align:center; color:#2c3e50; } */
     .table-container { margin:20px auto; max-width:900px; overflow-x:auto; }
     table { width:100%; border-collapse:collapse; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,.1); }
     th, td { border:1px solid #ccc; padding:10px; text-align:center; }
@@ -15,10 +15,331 @@
     .btn:hover { background:#2980b9; }
     .collapsible { background:#2c3e50; color:#fff; cursor:pointer; padding:12px; width:100%; border:none; text-align:left; font-size:16px; margin-top:20px; border-radius:5px; }
     .content { display:none; padding:15px; background:#fff; border:1px solid #ccc; margin-bottom:20px; }
+
+    :root {
+            --primary: #2c7da0;
+            --secondary: #a9d6e5;
+            --accent: #01497c;
+            --light: #f8f9fa;
+            --dark: #012a4a;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        h3 {
+            color: var(--accent);
+            margin: 1.2rem 0 0.8rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 1.5rem 0;
+        }
+        
+        .drug-card {
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+        }
+        
+        .apparatus-list, .drug-list {
+            list-style-type: none;
+        }
+        
+        .apparatus-list li, .drug-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .apparatus-list li:before, .drug-list li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        .procedure-step {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding-left: 2.5rem;
+            position: relative;
+        }
+        
+        .procedure-step:before {
+            content: counter(step-counter);
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .results-grid {
+            display: grid;
+            /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
+            gap: 15px;
+        }
+        
+        .result-item {
+            padding: 1rem;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+        }
+        
+        .saline { border-left: 4px solid var(--gray); }
+        .ringer { border-left: 4px solid var(--warning); }
+        .acetylcholine { border-left: 4px solid var(--success); }
+        .physostigmine { border-left: 4px solid var(--primary); }
+        .atropine { border-left: 4px solid var(--danger); }
+        
+        .disclaimer {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            font-style: italic;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            margin: 1rem 0;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: var(--accent);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid, .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
   </style>
 </head>
 <body>
-  <h1>Observation Results</h1>
+
+<div class="container">
+        <header>
+            <h1>Effect of Drugs on Ciliary Motility in Frog's Esophagus</h1>
+            <p>A pharmacological experiment studying how different drugs influence ciliary movement</p>
+        </header>
+        
+        <div class="card">
+            <h2>Introduction</h2>
+            <p>The experiment titled "Effect of Drugs on Ciliary Motility in Frog's Esophagus" is a fascinating study that explores the impact of various drugs on the ciliary movement within the esophagus of a frog. The esophagus of a frog is lined with stratified squamous epithelium. The cilia plays a crucial role in the frog's respiratory system, helping to move mucus and trapped particles.</p>
+            
+            <p>In this experiment, different drugs are introduced to observe their effects on the ciliary movement. The results of this experiment can provide valuable insights into how these drugs might affect ciliary function.</p>
+            
+            <p>This experiment is a significant contribution to the field of pharmacology and physiology, offering a unique perspective on the intricate interactions between drugs and the ciliary system. It underscores the importance of understanding the systemic effects of drugs, beyond their primary therapeutic targets.</p>
+        </div>
+        
+        <h2>Requirements</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Apparatus</h3>
+                <ul class="apparatus-list">
+                    <li>Frog Board</li>
+                    <li>Poppy seeds</li>
+                    <li>Stop watch</li>
+                    <li>Pins</li>
+                    <li>Surgical instruments</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>Animal</h3>
+                <p>Frog</p>
+            </div>
+            
+            <div class="card">
+                <h3>Drugs</h3>
+                <ul class="drug-list">
+                    <li>Normal saline</li>
+                    <li>Ringer's solution</li>
+                    <li>Acetylcholine (2 μg/ml)</li>
+                    <li>Physostigmine (2 μg/ml)</li>
+                    <li>Atropine (2 μg/ml)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Principle</h2>
+            <p>The principle of this experiment is based on the understanding that cilia, tiny hair-like structures lining the esophagus of a frog, play a crucial role in the frog's system. They move in coordinated waves, pushing mucus and trapped particles towards the throat, thereby keeping the airways clear.</p>
+            
+            <p>Drugs can influence the functioning of these cilia. They can either stimulate or inhibit ciliary movement, depending on their nature and concentration. This experiment is designed to observe and measure these effects.</p>
+            
+            <p>When a drug is introduced into the frog's esophagus, it comes into contact with the cilia. If the drug has a stimulatory effect, it will increase the speed and coordination of ciliary movement. Conversely, if the drug has an inhibitory effect, it will slow down or even stop ciliary movement.</p>
+            
+            <p>By observing these changes, researchers can gain insights into the drug's potential effects on the respiratory system. This is particularly important for drugs that are inhaled or ingested, as they would come into direct contact with the cilia in the human respiratory and digestive tracts.</p>
+            
+            <p>This principle underscores the importance of understanding not just the intended effects of a drug, but also its potential side effects and interactions with various physiological systems. It is a testament to the complexity and interconnectedness of biological systems, and the care that must be taken when introducing foreign substances into these systems.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Observation Table</h2>
+
+        <div class="table-container">
+          <table id="resultsTable">
+            <thead>
+              <tr>
+                <th>Drug</th>
+                <th>Frog 1</th>
+                <th>Frog 2</th>
+                <th>Frog 3</th>
+                <th>Mean Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Ringer Solution</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Acetylcholine</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Physostigmine</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Atropine</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+            
+            <div class="disclaimer">
+                <strong>DISCLAIMER:</strong> "The results provided here are only for reference or comparison purposes. Students are expected to perform the experiment and record their actual observations."
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Procedure</h2>
+            <ol style="list-style: none; counter-reset: step-counter; padding-left: 0;">
+                <li class="procedure-step">Decapitate the frog and pin the frog to the frog board on its back.</li>
+                <li class="procedure-step">Remove the lower jaw and cut till the abdomen exposing the esophagus. Keep the buccal cavity and the opening of the esophagus wet by irrigating it with normal saline.</li>
+                <li class="procedure-step">To assess the distance travelled by the particle, fix two points ie. one at start of the lower jaw and other at the beginning of the esophagus. Keep this distance constant to measure the time taken by the particle to move from a fixed point in the lower jaw to the beginning of the esophagus.</li>
+                <li class="procedure-step">Place a poppy seed or a small piece of cork at the pre-marked spot in the jaw. Turn on the stop-watch and note the time taken by the object to reach the beginning of the esophagus. Repeat this several times.</li>
+                <li class="procedure-step">Put a few drops of ringer on the buccal cavity and after 3 min repeat step 4. Note the time.</li>
+                <li class="procedure-step">Wash the buccal cavity with normal saline. Put a 1 drops of Acetylcholine on the buccal cavity. After 3 min repeat the step 4. Note the time.</li>
+                <li class="procedure-step">Wash the buccal cavity with normal saline. Put a 1 drop of physostigmine on the buccal cavity. After 3 min repeat the step 4. Note the time.</li>
+                <li class="procedure-step">Wash the buccal cavity with normal saline. Put a 1 drops of atropine on the buccal cavity. After 3 min repeat the step 4. Note the time.</li>
+                <li class="procedure-step">Find out the difference in the time taken by the object to move between the pre-marked distance in the esophagus in presence of saline, ringer, Acetylcholine, physostigmine and atropine.</li>
+            </ol>
+        </div>
+        
+        <div class="card">
+            <h2>Results</h2>
+            <div class="results-grid">
+                <div class="result-item saline">
+                    <h3>Saline</h3>
+                    <p>As a control, saline should have no significant effect on the speed of ciliary movement. The time taken by the particle to move from the lower jaw to the esophagus should remain consistent with the baseline measurements.</p>
+                </div>
+                
+                <div class="result-item ringer">
+                    <h3>Ringer</h3>
+                    <p>Depending on its properties, ringer might either stimulate or inhibit ciliary movement. This would be reflected in a decrease or increase in the time taken by the particle to reach the esophagus, respectively.</p>
+                </div>
+                
+                <div class="result-item acetylcholine">
+                    <h3>Acetylcholine</h3>
+                    <p>As a neurotransmitter known to stimulate muscle contraction, acetylcholine might increase the speed of ciliary movement. This could result in a decrease in the time taken by the particle to reach the esophagus.</p>
+                </div>
+                
+                <div class="result-item physostigmine">
+                    <h3>Physostigmine</h3>
+                    <p>This drug is a reversible inhibitor of acetylcholinesterase, an enzyme that breaks down acetylcholine. By increasing the availability of acetylcholine, physostigmine might also increase the speed of ciliary movement, leading to a decrease in the time taken by the particle to reach the esophagus.</p>
+                </div>
+                
+                <div class="result-item atropine">
+                    <h3>Atropine</h3>
+                    <p>This drug is a competitive antagonist for the muscarinic acetylcholine receptors. It might slow down ciliary movement, resulting in an increase in the time taken by the particle to reach the esophagus.</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Pharmacology Experiment Documentation | For Educational Purposes Only</p>
+        </footer>
+    </div>
+
+
+
+        <h1>Observation Results</h1>
 
   <div class="table-container">
     <table id="resultsTable">
@@ -40,32 +361,10 @@
     </table>
   </div>
 
+
+  
+
   <button class="btn" onclick="window.print()">🖨 Print Results</button>
-
-  <button class="collapsible">📘 Buccal Cavity Experiment Details</button>
-  <div class="content">
-    <h2>Introduction</h2>
-    <p>The experiment titled “Effect of Drugs on Ciliary Motility in Frog’s oesophagus” explores the impact of various drugs on the ciliary movement within the oesophagus of a frog. The oesophagus is lined with stratified squamous epithelium, and the cilia help move mucus and particles.</p>
-
-    <h2>Requirements</h2>
-    <ul>
-      <li>Apparatus: Frog Board, poppy seeds, stopwatch, pins, surgical instruments</li>
-      <li>Animal: Frog</li>
-      <li>Drugs: Normal saline, Ringer’s solution, Acetylcholine, Physostigmine, Atropine</li>
-    </ul>
-
-    <h2>Procedure</h2>
-    <p>Decapitate the frog and pin it to the board. Remove the jaw, irrigate with saline, place a poppy seed, and measure time to oesophagus. Repeat after adding Ringer, Acetylcholine, Physostigmine, and Atropine with washes in between.</p>
-
-    <h2>Results</h2>
-    <p>
-      - Saline: No significant effect<br>
-      - Ringer: May stimulate or inhibit<br>
-      - Acetylcholine: Increases speed<br>
-      - Physostigmine: Increases speed<br>
-      - Atropine: Slows movement
-    </p>
-  </div>
 
   <script>
   const params = new URLSearchParams(window.location.search);
@@ -111,4 +410,5 @@
 
 </body>
 </html>
+
 
