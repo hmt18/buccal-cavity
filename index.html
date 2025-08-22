@@ -68,40 +68,47 @@
   </div>
 
   <script>
-    // --- Parse Unity data ---
-    const params = new URLSearchParams(window.location.search);
-    const raw = params.get("data");
-    if (raw) {
-      let parts = raw.split("||");
-      let frogRows = parts[0].split("|");   // 4 rows
-      let meanValues = (parts[1] || "").split(",");
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get("data");
 
-      let rows = document.querySelectorAll("#resultsTable tbody tr");
+  if (raw) {
+    let rows = document.querySelectorAll("#resultsTable tbody tr");
 
-      // Fill frogs
-      frogRows.forEach((rowStr, i) => {
-        if (i < rows.length) {
-          let values = rowStr.split(",").filter(v => v.length > 0);
-          let cols = rows[i].querySelectorAll("td");
-          cols[1].textContent = values[0] || "";
-          cols[2].textContent = values[1] || "";
-          cols[3].textContent = values[2] || "";
-        }
-      });
+    // Split into Inputs section and Means section
+    let parts = raw.split("Means:");
+    let inputsSection = parts[0].replace("Inputs:", "").trim();
+    let meansSection = parts[1] ? parts[1].trim() : "";
 
-      // Fill means
-      meanValues.forEach((val, i) => {
-        if (i < rows.length) {
-          rows[i].querySelectorAll("td")[4].textContent = val;
-        }
-      });
-    }
+    // Each line = one drug row
+    let inputLines = inputsSection.split("\n").filter(l => l.trim().length > 0);
 
-    // Collapsible toggle
-    document.querySelector(".collapsible").addEventListener("click", function() {
-      let content = this.nextElementSibling;
-      content.style.display = content.style.display === "block" ? "none" : "block";
+    inputLines.forEach((line, i) => {
+      if (i < rows.length) {
+        let cols = rows[i].querySelectorAll("td");
+        let values = line.split(",").map(v => v.trim());
+
+        cols[1].textContent = values[0] || "";
+        cols[2].textContent = values[1] || "";
+        cols[3].textContent = values[2] || "";
+      }
     });
-  </script>
+
+    // Parse means
+    let meanValues = meansSection.split(",").map(v => v.trim());
+    meanValues.forEach((val, i) => {
+      if (i < rows.length) {
+        rows[i].querySelectorAll("td")[4].textContent = val;
+      }
+    });
+  }
+
+  // Collapsible toggle
+  document.querySelector(".collapsible").addEventListener("click", function() {
+    let content = this.nextElementSibling;
+    content.style.display = content.style.display === "block" ? "none" : "block";
+  });
+</script>
+
 </body>
 </html>
+
