@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Observation Results - Frog Ciliary Motility</title>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; margin:20px; background:#f5f8fa; color:#333; }
+    h1 { text-align:center; color:#2c3e50; }
+    .table-container { margin:20px auto; max-width:900px; overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,.1); }
+    th, td { border:1px solid #ccc; padding:10px; text-align:center; }
+    th { background:#3498db; color:#fff; }
+    tr:nth-child(even){ background:#f9f9f9; }
+    .btn { background:#3498db; color:#fff; padding:10px 20px; border:none; border-radius:5px; margin:10px 5px; cursor:pointer; }
+    .btn:hover { background:#2980b9; }
+    .collapsible { background:#2c3e50; color:#fff; cursor:pointer; padding:12px; width:100%; border:none; text-align:left; font-size:16px; margin-top:20px; border-radius:5px; }
+    .content { display:none; padding:15px; background:#fff; border:1px solid #ccc; margin-bottom:20px; }
+  </style>
+</head>
+<body>
+  <h1>Observation Results</h1>
+
+  <div class="table-container">
+    <table id="resultsTable">
+      <thead>
+        <tr>
+          <th>Drug</th>
+          <th>Frog 1</th>
+          <th>Frog 2</th>
+          <th>Frog 3</th>
+          <th>Mean Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Normal Saline</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Ringer Solution</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Acetylcholine</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Physostigmine</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Atropine</td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="btn" onclick="window.print()">🖨 Print Results</button>
+
+  <button class="collapsible">📘 Buccal Cavity Experiment Details</button>
+  <div class="content">
+    <h2>Introduction</h2>
+    <p>The experiment titled “Effect of Drugs on Ciliary Motility in Frog’s oesophagus” explores the impact of various drugs on the ciliary movement within the oesophagus of a frog. The oesophagus is lined with stratified squamous epithelium, and the cilia help move mucus and particles.</p>
+
+    <h2>Requirements</h2>
+    <ul>
+      <li>Apparatus: Frog Board, poppy seeds, stopwatch, pins, surgical instruments</li>
+      <li>Animal: Frog</li>
+      <li>Drugs: Normal saline, Ringer’s solution, Acetylcholine, Physostigmine, Atropine</li>
+    </ul>
+
+    <h2>Procedure</h2>
+    <p>Decapitate the frog and pin it to the board. Remove the jaw, irrigate with saline, place a poppy seed, and measure time to oesophagus. Repeat after adding Ringer, Acetylcholine, Physostigmine, and Atropine with washes in between.</p>
+
+    <h2>Results</h2>
+    <p>
+      - Saline: No significant effect<br>
+      - Ringer: May stimulate or inhibit<br>
+      - Acetylcholine: Increases speed<br>
+      - Physostigmine: Increases speed<br>
+      - Atropine: Slows movement
+    </p>
+  </div>
+
+  <script>
+    // --- Parse Unity data ---
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get("data");
+    if (raw) {
+      let parts = raw.split("||");
+      let frogRows = parts[0].split("|");   // 4 rows
+      let meanValues = (parts[1] || "").split(",");
+
+      let rows = document.querySelectorAll("#resultsTable tbody tr");
+
+      // Fill frogs
+      frogRows.forEach((rowStr, i) => {
+        if (i < rows.length) {
+          let values = rowStr.split(",").filter(v => v.length > 0);
+          let cols = rows[i].querySelectorAll("td");
+          cols[1].textContent = values[0] || "";
+          cols[2].textContent = values[1] || "";
+          cols[3].textContent = values[2] || "";
+        }
+      });
+
+      // Fill means
+      meanValues.forEach((val, i) => {
+        if (i < rows.length) {
+          rows[i].querySelectorAll("td")[4].textContent = val;
+        }
+      });
+    }
+
+    // Collapsible toggle
+    document.querySelector(".collapsible").addEventListener("click", function() {
+      let content = this.nextElementSibling;
+      content.style.display = content.style.display === "block" ? "none" : "block";
+    });
+  </script>
+</body>
+</html>
